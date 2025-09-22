@@ -55,6 +55,12 @@
             this.lblType = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.cmbFilterType = new System.Windows.Forms.ComboBox();
+            this.cmbFilterStatus = new System.Windows.Forms.ComboBox();
+            this.btnResetFilters = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPrice)).BeginInit();
@@ -81,27 +87,32 @@
             // mnuCreate
             // 
             this.mnuCreate.Name = "mnuCreate";
-            this.mnuCreate.Size = new System.Drawing.Size(88, 26);
+            this.mnuCreate.Size = new System.Drawing.Size(88, 24);
             this.mnuCreate.Text = "Створити";
             this.mnuCreate.Click += new System.EventHandler(this.MnuCreate_Click);
             // 
             // mnuSave
             // 
             this.mnuSave.Name = "mnuSave";
-            this.mnuSave.Size = new System.Drawing.Size(86, 26);
+            this.mnuSave.Size = new System.Drawing.Size(86, 24);
             this.mnuSave.Text = "Зберегти";
             this.mnuSave.Click += new System.EventHandler(this.MnuSave_Click);
             // 
             // mnuExport
             // 
             this.mnuExport.Name = "mnuExport";
-            this.mnuExport.Size = new System.Drawing.Size(79, 26);
+            this.mnuExport.Size = new System.Drawing.Size(79, 24);
             this.mnuExport.Text = "Вивести";
             this.mnuExport.Click += new System.EventHandler(this.MnuExport_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.btnResetFilters);
+            this.panel1.Controls.Add(this.cmbFilterStatus);
+            this.panel1.Controls.Add(this.cmbFilterType);
+            this.panel1.Controls.Add(this.txtSearch);
             this.panel1.Controls.Add(this.cmbCurrency);
             this.panel1.Controls.Add(this.mtxHouse);
             this.panel1.Controls.Add(this.cmbStreetType);
@@ -172,19 +183,20 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(281, 253);
+            this.btnClear.Location = new System.Drawing.Point(282, 286);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(81, 29);
+            this.btnClear.Size = new System.Drawing.Size(80, 23);
             this.btnClear.TabIndex = 15;
             this.btnClear.Text = "Очистити";
+            this.toolTip1.SetToolTip(this.btnClear, "Очистити поля вводу");
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(12, 314);
+            this.btnAdd.Location = new System.Drawing.Point(281, 255);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(110, 44);
+            this.btnAdd.Size = new System.Drawing.Size(84, 25);
             this.btnAdd.TabIndex = 14;
             this.btnAdd.Text = "Додати";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -371,6 +383,55 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(122, 308);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(100, 22);
+            this.txtSearch.TabIndex = 19;
+            this.toolTip1.SetToolTip(this.txtSearch, "Введіть назву обёєкта для фільтрації");
+            // 
+            // cmbFilterType
+            // 
+            this.cmbFilterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFilterType.FormattingEnabled = true;
+            this.cmbFilterType.Location = new System.Drawing.Point(16, 308);
+            this.cmbFilterType.Name = "cmbFilterType";
+            this.cmbFilterType.Size = new System.Drawing.Size(100, 24);
+            this.cmbFilterType.TabIndex = 20;
+            // 
+            // cmbFilterStatus
+            // 
+            this.cmbFilterStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFilterStatus.FormattingEnabled = true;
+            this.cmbFilterStatus.Location = new System.Drawing.Point(16, 338);
+            this.cmbFilterStatus.Name = "cmbFilterStatus";
+            this.cmbFilterStatus.Size = new System.Drawing.Size(100, 24);
+            this.cmbFilterStatus.TabIndex = 21;
+            // 
+            // btnResetFilters
+            // 
+            this.btnResetFilters.Location = new System.Drawing.Point(122, 336);
+            this.btnResetFilters.Name = "btnResetFilters";
+            this.btnResetFilters.Size = new System.Drawing.Size(100, 26);
+            this.btnResetFilters.TabIndex = 22;
+            this.btnResetFilters.Text = "Очистити ";
+            this.toolTip1.SetToolTip(this.btnResetFilters, "Очистити поля для фільтрації");
+            this.btnResetFilters.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 293);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(123, 16);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "Пошук/фільтрація";
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -426,6 +487,12 @@
         private System.Windows.Forms.MaskedTextBox mtxHouse;
         private System.Windows.Forms.ComboBox cmbCurrency;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Button btnResetFilters;
+        private System.Windows.Forms.ComboBox cmbFilterStatus;
+        private System.Windows.Forms.ComboBox cmbFilterType;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

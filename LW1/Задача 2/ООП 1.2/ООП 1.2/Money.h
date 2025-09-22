@@ -2,19 +2,24 @@
 #include <iostream>
 using namespace std;
 
-const int max_denom = 10;
 class Money {
 private:
-    int denom[max_denom];
-    int count[max_denom];
-    int size;             
+    int nominal;  
+    int count;     
+    bool isCoin;  
 
 public:
     Money();
-    void readFromKeyboard();
-    void setData(int d[], int c[], int n);
-    long long getTotal() const;              
-    bool canBuy(long long N) const;         
-    long long howManyItems(long long p) const; 
-    void print() const;
+    Money(int n, int c, bool coin);
+
+    void input();
+    void print();
+
+    int getNominal();
+    int getCount();
+    bool getIsCoin();
+    long long amount();
 };
+long long totalAmount(Money arr[], int n);
+bool canBuy(Money arr[], int n, long long sum);
+long long howManyItems(Money arr[], int n, long long price);
