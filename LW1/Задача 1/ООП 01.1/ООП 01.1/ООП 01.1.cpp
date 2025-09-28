@@ -8,12 +8,11 @@ int main() {
     Product p2("Keyboard", 2, 399.99f);
     p2.printProduct();
 
-    Product p3 = p2; 
+    Product p3 = p2;   
     p3.setAmount(3);
     p3.setValue(379.99f);
     p3.printProduct();
 
-  
     Product bad("Test", -10, -5.0f);
     bad.printProduct();
 

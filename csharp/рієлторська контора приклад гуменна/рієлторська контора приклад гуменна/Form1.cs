@@ -10,23 +10,28 @@ namespace рієлторська_контора_приклад_гуменна
 {
     public partial class Form1 : Form
     {
+        public enum PropertyType { Квартира, Будинок, Офіс, Ділянка }
+        public enum DealStatus { В_продажу, Оренда, Продано, Резерв }
+        public enum Currency { UAH, USD, EUR }
+        public enum PropertyTypeFilter { Всі, Квартира, Будинок, Офіс, Ділянка }
+        public enum DealStatusFilter { Всі, В_продажу, Оренда, Продано, Резерв }
         private List<PropertyItem> properties = new List<PropertyItem>();
-
         private string lastSortColumn = "";
         private bool lastSortAsc = true;
 
         public Form1()
         {
             InitializeComponent();
-
+            mnuEdit.Click += mnuEdit_Click;
+            mnuDelete.Click += mnuDelete_Click;
+            dataGridView1.SelectionChanged += (s, e) => UpdateMenuState();
             this.Load += FormMain_Load;
-
             txtStreetName.Validating += (s, e) => ValidateStreetName();
             mtxHouse.Validating += (s, e) => ValidateHouse();
-
             txtSearch.TextChanged += (s, e) => ApplyView();
             cmbFilterType.SelectedIndexChanged += (s, e) => ApplyView();
             cmbFilterStatus.SelectedIndexChanged += (s, e) => ApplyView();
+
             btnResetFilters.Click += (s, e) =>
             {
                 txtSearch.Clear();
@@ -37,7 +42,6 @@ namespace рієлторська_контора_приклад_гуменна
 
             dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
         }
-
         private void FormMain_Load(object sender, EventArgs e)
         {
             ConfigureGrid();
@@ -52,26 +56,26 @@ namespace рієлторська_контора_приклад_гуменна
                 { "вул.", "просп.", "пров.", "бульв.", "пл.", "шосе", "набережна", "узвіз", "тракт", "кв-л", "мікрорайон" });
                 cmbStreetType.SelectedIndex = 0;
             }
+            cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbType.DataSource = Enum.GetValues(typeof(PropertyType));
 
-            if (cmbCurrency.Items.Count == 0)
+            cmbCurrency.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCurrency.DataSource = Enum.GetValues(typeof(Currency));
+            cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbStatus.DataSource = new[]
             {
-                cmbCurrency.DropDownStyle = ComboBoxStyle.DropDownList;
-                cmbCurrency.Items.AddRange(new object[] { "UAH", "USD", "EUR" });
-                cmbCurrency.SelectedIndex = 0;
-            }
+        new { Key = DealStatus.В_продажу, Value = "В продажу" },
+        new { Key = DealStatus.Оренда,    Value = "Оренда"     },
+        new { Key = DealStatus.Продано,   Value = "Продано"    },
+        new { Key = DealStatus.Резерв,    Value = "Резерв"     },
+    };
+            cmbStatus.DisplayMember = "Value";
+            cmbStatus.ValueMember = "Key";
+            cmbFilterType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilterType.DataSource = Enum.GetValues(typeof(PropertyTypeFilter));
 
-            if (cmbFilterType.Items.Count == 0)
-            {
-                cmbFilterType.DropDownStyle = ComboBoxStyle.DropDownList;
-                cmbFilterType.Items.AddRange(new object[] { "всі", "Квартира", "Будинок", "Офіс", "Ділянка" });
-                cmbFilterType.SelectedIndex = 0;
-            }
-            if (cmbFilterStatus.Items.Count == 0)
-            {
-                cmbFilterStatus.DropDownStyle = ComboBoxStyle.DropDownList;
-                cmbFilterStatus.Items.AddRange(new object[] { "всі", "В продажу", "Оренда", "Продано", "Резерв" });
-                cmbFilterStatus.SelectedIndex = 0;
-            }
+            cmbFilterStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilterStatus.DataSource = Enum.GetValues(typeof(DealStatusFilter));
 
             ApplyView();
         }
@@ -96,7 +100,6 @@ namespace рієлторська_контора_приклад_гуменна
             dgv.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCurrency", HeaderText = "Валюта", Width = 70, DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleCenter } });
             dgv.Columns.Add(new DataGridViewTextBoxColumn { Name = "colStatus", HeaderText = "Статус", Width = 110 });
         }
-
         private bool ValidateStreetName()
         {
             string text = txtStreetName.Text.Trim();
@@ -143,7 +146,6 @@ namespace рієлторська_контора_приклад_гуменна
             errorProvider1.SetError(mtxHouse, "");
             txtStreetName.Focus();
         }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (!ValidateStreetName() | !ValidateHouse())
@@ -152,21 +154,25 @@ namespace рієлторська_контора_приклад_гуменна
                 return;
             }
 
-            PropertyItem item = new PropertyItem();
-            item.Type = cmbType.Text;
-            item.Address = BuildAddress();
-            item.Area = numArea.Value;
-            item.Rooms = (int)numRooms.Value;
-            item.YearBuilt = (int)numYear.Value;
-            item.Price = numPrice.Value;
-            item.Currency = cmbCurrency.Text;
-            item.Status = cmbStatus.Text;
+            var item = new PropertyItem
+            {
+                Type = (PropertyType)cmbType.SelectedItem,
+                Currency = (Currency)cmbCurrency.SelectedItem,
+                Status = (DealStatus)cmbStatus.SelectedValue, 
+
+                Address = BuildAddress(),
+                Area = numArea.Value,
+                Rooms = (int)numRooms.Value,
+                YearBuilt = (int)numYear.Value,
+                Price = numPrice.Value
+            };
 
             properties.Add(item);
 
             ApplyView();
             ClearInputs();
         }
+
 
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -177,11 +183,12 @@ namespace рієлторська_контора_приклад_гуменна
         {
             ClearInputs();
             if (cmbStreetType.Items.Count > 0) cmbStreetType.SelectedIndex = 0;
-            if (cmbCurrency.Items.Count > 0) cmbCurrency.SelectedIndex = 0;
             if (cmbType.Items.Count > 0) cmbType.SelectedIndex = 0;
             if (cmbStatus.Items.Count > 0) cmbStatus.SelectedIndex = 0;
+            if (cmbCurrency.Items.Count > 0) cmbCurrency.SelectedIndex = 0;
+            if (cmbFilterType.Items.Count > 0) cmbFilterType.SelectedIndex = 0;
+            if (cmbFilterStatus.Items.Count > 0) cmbFilterStatus.SelectedIndex = 0;
         }
-
         private void MnuSave_Click(object sender, EventArgs e)
         {
             if (properties.Count == 0)
@@ -218,14 +225,14 @@ namespace рієлторська_контора_приклад_гуменна
                 bw.Write(properties.Count);
                 foreach (PropertyItem it in properties)
                 {
-                    bw.Write(it.Type ?? "");
+                    bw.Write((int)it.Type);     
                     bw.Write(it.Address ?? "");
                     bw.Write(it.Area);
                     bw.Write(it.Rooms);
                     bw.Write(it.YearBuilt);
                     bw.Write(it.Price);
-                    bw.Write(it.Currency ?? "");
-                    bw.Write(it.Status ?? "");
+                    bw.Write((int)it.Currency); 
+                    bw.Write((int)it.Status);   
                 }
             }
         }
@@ -241,64 +248,69 @@ namespace рієлторська_контора_приклад_гуменна
                 for (int i = 0; i < count; i++)
                 {
                     PropertyItem it = new PropertyItem();
-                    it.Type = br.ReadString();
+                    it.Type = (PropertyType)br.ReadInt32();
                     it.Address = br.ReadString();
                     it.Area = br.ReadDecimal();
                     it.Rooms = br.ReadInt32();
                     it.YearBuilt = br.ReadInt32();
                     it.Price = br.ReadDecimal();
-                    it.Currency = br.ReadString();
-                    it.Status = br.ReadString();
+                    it.Currency = (Currency)br.ReadInt32();
+                    it.Status = (DealStatus)br.ReadInt32();
 
                     properties.Add(it);
                 }
             }
         }
-
         private void ApplyView()
         {
+            string searchText = (txtSearch.Text == null) ? "" : txtSearch.Text.Trim().ToLower();
 
-            string q = (txtSearch.Text == null) ? "" : txtSearch.Text.Trim().ToLower();
-            string type = (cmbFilterType.SelectedItem as string) ?? "всі";
-            string status = (cmbFilterStatus.SelectedItem as string) ?? "всі";
+            PropertyTypeFilter typeFilter = PropertyTypeFilter.Всі;
+            DealStatusFilter statusFilter = DealStatusFilter.Всі;
+
+            if (cmbFilterType.SelectedItem != null)
+                typeFilter = (PropertyTypeFilter)cmbFilterType.SelectedItem;
+            if (cmbFilterStatus.SelectedItem != null)
+                statusFilter = (DealStatusFilter)cmbFilterStatus.SelectedItem;
 
             dataGridView1.Rows.Clear();
 
             foreach (PropertyItem it in properties)
             {
                 bool ok = true;
-
-                if (q.Length > 0)
+                if (searchText.Length > 0)
                 {
                     string addr = (it.Address ?? "").ToLower();
-                    string t = (it.Type ?? "").ToLower();
-                    string st = (it.Status ?? "").ToLower();
-
-                    if (!addr.Contains(q) && !t.Contains(q) && !st.Contains(q))
+                    if (!addr.Contains(searchText))
                         ok = false;
                 }
-
-                if (ok && type != "всі")
+                if (ok && typeFilter != PropertyTypeFilter.Всі)
                 {
-                    if (!string.Equals(it.Type, type, StringComparison.OrdinalIgnoreCase))
+                    if (it.Type.ToString() != typeFilter.ToString())
                         ok = false;
                 }
-
-                if (ok && status != "всі")
+                if (ok && statusFilter != DealStatusFilter.Всі)
                 {
-                    if (!string.Equals(it.Status, status, StringComparison.OrdinalIgnoreCase))
+                    if (it.Status.ToString() != statusFilter.ToString())
                         ok = false;
                 }
 
                 if (ok)
                 {
                     dataGridView1.Rows.Add(
-                        it.Type, it.Address, it.Area, it.Rooms,
-                        it.YearBuilt, it.Price, it.Currency, it.Status
+                        it.Type.ToString(),
+                        it.Address,
+                        it.Area,
+                        it.Rooms,
+                        it.YearBuilt,
+                        it.Price,
+                        it.Currency.ToString(),
+                        it.Status.ToString()
                     );
                 }
             }
         }
+
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -317,20 +329,58 @@ namespace рієлторська_контора_приклад_гуменна
                 int r = 0;
                 switch (col)
                 {
-                    case "colType": r = string.Compare(a.Type, b.Type, StringComparison.OrdinalIgnoreCase); break;
+                    case "colType": r = string.Compare(a.Type.ToString(), b.Type.ToString(), StringComparison.OrdinalIgnoreCase); break;
                     case "colAddress": r = string.Compare(a.Address, b.Address, StringComparison.OrdinalIgnoreCase); break;
                     case "colArea": r = a.Area.CompareTo(b.Area); break;
                     case "colRooms": r = a.Rooms.CompareTo(b.Rooms); break;
                     case "colYear": r = a.YearBuilt.CompareTo(b.YearBuilt); break;
                     case "colPrice": r = a.Price.CompareTo(b.Price); break;
-                    case "colCurrency": r = string.Compare(a.Currency, b.Currency, StringComparison.OrdinalIgnoreCase); break;
-                    case "colStatus": r = string.Compare(a.Status, b.Status, StringComparison.OrdinalIgnoreCase); break;
+                    case "colCurrency": r = string.Compare(a.Currency.ToString(), b.Currency.ToString(), StringComparison.OrdinalIgnoreCase); break;
+                    case "colStatus": r = string.Compare(a.Status.ToString(), b.Status.ToString(), StringComparison.OrdinalIgnoreCase); break;
                 }
                 if (!lastSortAsc) r = -r;
                 return r;
             };
 
             properties.Sort(cmp);
+            ApplyView();
+        }
+        private void UpdateMenuState()
+        {
+            bool hasSelection = dataGridView1.SelectedRows.Count > 0;
+            mnuEdit.Enabled = hasSelection && dataGridView1.SelectedRows.Count == 1;
+            mnuDelete.Enabled = hasSelection;
+        }
+        private void mnuEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1) return;
+
+            var row = dataGridView1.SelectedRows[0];
+            var item = properties[row.Index];
+            cmbType.SelectedItem = item.Type;
+            txtStreetName.Text = item.Address;
+            numArea.Value = item.Area;
+            numRooms.Value = item.Rooms;
+            numYear.Value = item.YearBuilt;
+            numPrice.Value = item.Price;
+            cmbCurrency.SelectedItem = item.Currency;
+            cmbStatus.SelectedItem = item.Status;
+            btnAdd.Text = "Зберегти";
+        }
+
+        private void mnuDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0) return;
+
+            if (MessageBox.Show("Видалити вибрані записи?", "Підтвердження",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            {
+                if (row.Index >= 0 && row.Index < properties.Count)
+                    properties.RemoveAt(row.Index);
+            }
+
             ApplyView();
         }
     }

@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InputUtils.cpp" />
     <ClCompile Include="Money.cpp" />
     <ClCompile Include="ООП 1.2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InputUtils.h" />
     <ClInclude Include="Money.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
