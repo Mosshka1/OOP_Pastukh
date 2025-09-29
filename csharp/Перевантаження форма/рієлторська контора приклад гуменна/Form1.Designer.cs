@@ -63,6 +63,11 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.операціїToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRoomsPlus = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRoomsMinus = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuToggleSold = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuComparePrice = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPrice)).BeginInit();
@@ -81,44 +86,45 @@
             this.mnuSave,
             this.mnuExport,
             this.mnuEdit,
-            this.mnuDelete});
+            this.mnuDelete,
+            this.операціїToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // mnuCreate
             // 
             this.mnuCreate.Name = "mnuCreate";
-            this.mnuCreate.Size = new System.Drawing.Size(88, 26);
+            this.mnuCreate.Size = new System.Drawing.Size(88, 24);
             this.mnuCreate.Text = "Створити";
             this.mnuCreate.Click += new System.EventHandler(this.MnuCreate_Click);
             // 
             // mnuSave
             // 
             this.mnuSave.Name = "mnuSave";
-            this.mnuSave.Size = new System.Drawing.Size(86, 26);
+            this.mnuSave.Size = new System.Drawing.Size(86, 24);
             this.mnuSave.Text = "Зберегти";
             this.mnuSave.Click += new System.EventHandler(this.MnuSave_Click);
             // 
             // mnuExport
             // 
             this.mnuExport.Name = "mnuExport";
-            this.mnuExport.Size = new System.Drawing.Size(79, 26);
+            this.mnuExport.Size = new System.Drawing.Size(79, 24);
             this.mnuExport.Text = "Вивести";
             this.mnuExport.Click += new System.EventHandler(this.MnuExport_Click);
             // 
             // mnuEdit
             // 
             this.mnuEdit.Name = "mnuEdit";
-            this.mnuEdit.Size = new System.Drawing.Size(99, 26);
+            this.mnuEdit.Size = new System.Drawing.Size(99, 24);
             this.mnuEdit.Text = "Редагувати";
             // 
             // mnuDelete
             // 
             this.mnuDelete.Name = "mnuDelete";
-            this.mnuDelete.Size = new System.Drawing.Size(89, 26);
+            this.mnuDelete.Size = new System.Drawing.Size(89, 24);
             this.mnuDelete.Text = "Видалити";
             // 
             // panel1
@@ -149,9 +155,9 @@
             this.panel1.Controls.Add(this.cmbType);
             this.panel1.Controls.Add(this.lblType);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 30);
+            this.panel1.Location = new System.Drawing.Point(0, 28);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(368, 420);
+            this.panel1.Size = new System.Drawing.Size(368, 422);
             this.panel1.TabIndex = 1;
             // 
             // label1
@@ -429,15 +435,14 @@
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(368, 30);
-            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Location = new System.Drawing.Point(368, 28);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(432, 420);
+            this.dataGridView1.Size = new System.Drawing.Size(432, 422);
             this.dataGridView1.TabIndex = 2;
             // 
             // errorProvider1
@@ -447,6 +452,41 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
+            // 
+            // операціїToolStripMenuItem
+            // 
+            this.операціїToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuRoomsPlus,
+            this.mnuRoomsMinus,
+            this.mnuToggleSold,
+            this.mnuComparePrice});
+            this.операціїToolStripMenuItem.Name = "операціїToolStripMenuItem";
+            this.операціїToolStripMenuItem.Size = new System.Drawing.Size(85, 24);
+            this.операціїToolStripMenuItem.Text = "Операції";
+            // 
+            // mnuRoomsPlus
+            // 
+            this.mnuRoomsPlus.Name = "mnuRoomsPlus";
+            this.mnuRoomsPlus.Size = new System.Drawing.Size(309, 26);
+            this.mnuRoomsPlus.Text = "Кімнати ++";
+            // 
+            // mnuRoomsMinus
+            // 
+            this.mnuRoomsMinus.Name = "mnuRoomsMinus";
+            this.mnuRoomsMinus.Size = new System.Drawing.Size(309, 26);
+            this.mnuRoomsMinus.Text = "Кімнати --";
+            // 
+            // mnuToggleSold
+            // 
+            this.mnuToggleSold.Name = "mnuToggleSold";
+            this.mnuToggleSold.Size = new System.Drawing.Size(309, 26);
+            this.mnuToggleSold.Text = "Перемкнути продано.доступно";
+            // 
+            // mnuComparePrice
+            // 
+            this.mnuComparePrice.Name = "mnuComparePrice";
+            this.mnuComparePrice.Size = new System.Drawing.Size(309, 26);
+            this.mnuComparePrice.Text = "Порівняти ціну";
             // 
             // Form1
             // 
@@ -512,6 +552,11 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripMenuItem mnuEdit;
         private System.Windows.Forms.ToolStripMenuItem mnuDelete;
+        private System.Windows.Forms.ToolStripMenuItem операціїToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuRoomsPlus;
+        private System.Windows.Forms.ToolStripMenuItem mnuRoomsMinus;
+        private System.Windows.Forms.ToolStripMenuItem mnuToggleSold;
+        private System.Windows.Forms.ToolStripMenuItem mnuComparePrice;
     }
 }
 
