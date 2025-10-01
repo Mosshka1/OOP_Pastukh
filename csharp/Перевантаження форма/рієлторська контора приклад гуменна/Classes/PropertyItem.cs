@@ -1,4 +1,5 @@
 ﻿using System;
+using рієлторська_контора_приклад_гуменна.Enums;
 
 namespace рієлторська_контора_приклад_гуменна
 {
@@ -11,7 +12,7 @@ namespace рієлторська_контора_приклад_гуменна
         public int Rooms { get; set; }
         public int YearBuilt { get; set; }
         public decimal Price { get; set; }
-        public Form1.DealStatus Status { get; set; }
+        public DealStatus Status { get; set; }
         public Form1.Currency Currency { get; set; }
 
         public PropertyItem() { }
@@ -23,7 +24,7 @@ namespace рієлторська_контора_приклад_гуменна
             int rooms,
             int yearBuilt,
             decimal price,
-            Form1.DealStatus status,
+            DealStatus status,
             Form1.Currency currency)
         {
             Type = type;
@@ -43,9 +44,9 @@ namespace рієлторська_контора_приклад_гуменна
                 throw new InvalidOperationException("Різні валюти — порівняння/операція неможливі.");
         }
         public static bool operator !(PropertyItem x)
-            => x == null || x.Status == Form1.DealStatus.Продано;
+            => x == null || x.Status == DealStatus.Продано;
         public static bool operator true(PropertyItem x)
-            => x != null && x.Status != Form1.DealStatus.Продано;
+            => x != null && x.Status != DealStatus.Продано;
         public static bool operator false(PropertyItem x) => !(x);
 
         public static PropertyItem operator ++(PropertyItem x)

@@ -5,13 +5,13 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using рієлторська_контора_приклад_гуменна.Enums;
 
 namespace рієлторська_контора_приклад_гуменна
 {
     public partial class Form1 : Form
     {
         public enum PropertyType { Квартира, Будинок, Офіс, Ділянка }
-        public enum DealStatus { В_продажу, Оренда, Продано, Резерв }
         public enum Currency { UAH, USD, EUR }
         public enum PropertyTypeFilter { Всі, Квартира, Будинок, Офіс, Ділянка }
         public enum DealStatusFilter { Всі, В_продажу, Оренда, Продано, Резерв }

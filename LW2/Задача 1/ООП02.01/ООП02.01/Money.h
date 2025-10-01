@@ -8,19 +8,23 @@ using namespace std;
 class Money {
 private:
     int first;   
-    int second; 
+    int second;  
+    Money(int f, int s) : first(f), second(s) {}
+
 public:
-    Money(int f = 0, int s = 0);
-    Money& operator++();    
-    Money operator++(int);  
-    Money& operator--();    
-    Money operator--(int); 
-    bool operator!() const;
+    Money() = delete; 
+
+    static Money input();
+
+    Money& operator++();       
+    Money operator++(int);     
+    Money& operator--();       
+    Money operator--(int);     
+    bool operator!() const;    
     Money operator+(int scalar) const;
-    operator string() const;
-    static Money fromString(const string& str);
+
+    explicit operator string() const;
     void print() const;
 };
 
-#endif
-
+#endif 

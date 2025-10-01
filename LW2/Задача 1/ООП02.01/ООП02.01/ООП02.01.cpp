@@ -1,10 +1,14 @@
 ﻿#include "Money.h"
+#include <iostream>
+using namespace std;
 
 int main() {
     setlocale(0, "ukr");
-    Money m1(10, 50);
 
-    cout << "Початкове значення: ";
+    cout << "Створюємо Money тільки через введення користувача!\n";
+    Money m1 = Money::input();
+
+    cout << "Ви ввели: ";
     m1.print();
 
     ++m1;
@@ -15,19 +19,13 @@ int main() {
     cout << "Після --: ";
     m1.print();
 
-    cout << "Перевірка !m1 (чи second != 0): " << (!m1 ? "true" : "false") << endl;
+    cout << "Перевірка чи копійки не = 0: " << (!m1 ? "true" : "false") << "\n";
 
+    cout << "Додамо до копійок +25:\n";
     Money m2 = m1 + 25;
-    cout << "Після додавання скаляра +25: ";
     m2.print();
 
-    string s = (string)m2;
-    cout << "Як string: " << s << endl;
+    string s = static_cast<string>(m2); 
+    cout << "Як рядок (через змінну): " << s << "\n";
 
-    Money m3 = Money::fromString("15 75");
-    cout << "З рядка '15 75': ";
-    m3.print();
-
-    return 0;
 }
-
