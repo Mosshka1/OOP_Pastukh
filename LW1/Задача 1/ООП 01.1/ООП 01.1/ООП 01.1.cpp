@@ -15,6 +15,4 @@ int main() {
 
     Product bad("Test", -10, -5.0f);
     bad.printProduct();
-
-    return 0;
 }
